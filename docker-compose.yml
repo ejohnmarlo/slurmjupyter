@@ -1,0 +1,62 @@
+services:
+  slurmjupyter:
+        image: jupyter
+        stdin_open: true # docker run -i
+        tty: true        # docker run -t
+        volumes:
+                - /home/pat_zamora:/home/pat_zamora
+                - /opt:/opt 
+        ports:
+                - 8888:8888
+                  #- 6817:6817
+                  #- 6818:6818
+                  #- 6819:6819
+                 #command: ["bash", "-c", "export PATH=$PATH:/opt/miniconda3/bin && env"]
+               
+                  
+        entrypoint: ["/bin/bash", "-c",
+                                 "service munge start &&
+                                 adduser -u 182000020 pat_zamora --disabled-password --gecos ' ' &&
+                                 su - pat_zamora -c 'conda clean -iy' &&
+                                 su - pat_zamora -c 'jupyter lab --ip 0.0.0.0 --allow-root --notebook-dir=/home/pat_zamora --no-browser --NotebookApp.token='' --NotebookApp.password='''"]
+
+                  #opt/miniconda3/bin/conda init bash &&
+                  #entrypoint: ["bash", "-c", "env && conda init bash && conda activate pytorch"] 
+                  #entrypoint: ["conda", "info", "--envs"]
+                  #u - rocky -c '/opt/miniconda3/bin/conda init bash' &&
+                  # /opt/miniconda3/bin/conda activate pytorch &&
+                  # su - rocky -c 'source /home/rocky/.bashrc' &&
+                  # su - rocky -c '/opt/miniconda3/bin/conda activate /opt/miniconda3/envs/pytorch' &&
+                  # su - rocky -c 'jupyter lab --ip 0.0.0.0 --allow-root --notebook-dir=/home/rocky --no-browser --NotebookApp.token='' --NotebookApp.password='''"
+                  # su - rocky -c 'env' &&
+                  # su - rocky -c 'conda init' &&
+       
+                  #echo 'export PATH=$PATH:/opt/miniconda3/bin' >> /etc/profile.d/test.sh &&
+                  #               echo 'export CONDA_EXE=/opt/miniconda3/bin/conda' >> /etc/profile.d/test.sh &&
+                  #               echo 'export CONDA_PREFIX=/opt/miniconda3' >> /etc/profile.d/test.sh &&
+                  #               echo 'export CONDA_PYTHON_EXE=/opt/miniconda3/bin/python' >> /etc/profile.d/test.sh &&
+                  #               echo 'export CONDA_DEFAULT_ENV=pytorch' >> /etc/profile.d/test.sh &&
+                  #               echo 'export CONDA_AUTO_ACTIVATE_BASE=false' >> /etc/profile.d/test.sh &&
+                  #               echo 'export CONDA_SHLVL=1' >> /etc/profile.d/test.sh &&
+                  #               echo 'source /opt/miniconda3/etc/profile.d/conda.sh' >> /etc/profile.d/test.sh &&
+        
+        #slurmjupyter-setup:
+        #image: jupyter
+        #hostname: slurmjupyter
+        #depends_on:
+        #        - slurmjupyter
+        #ports:
+        #        - 8888:8888
+        #        - 6817:6817
+        #        - 6818:6818
+        #        - 6819:6819
+        #stdin_open: true # docker run -i
+        #tty: true        # docker run -t
+        #restart: "no"
+        # user: "182000012"
+        #volumes:
+        #        - /home/rocky:/mnt/notebooks
+        #entrypoint: ["/bin/bash", "-c", "source /etc/bash.bashrc && jupyter lab --ip 0.0.0.0 --notebook-dir=/mnt/notebooks --no-browser --NotebookApp.token='' --NotebookApp.password='' && chown -R rocky /root/.local"]
+
+
+        #

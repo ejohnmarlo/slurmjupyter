@@ -1,0 +1,8 @@
+export PATH=$PATH:/opt/miniconda3/bin
+export CONDA_EXE=/opt/miniconda3/bin/conda
+export CONDA_PREFIX=/opt/miniconda3
+export CONDA_PYTHON_EXE=/opt/miniconda3/bin/python
+export CONDA_DEFAULT_ENV=base
+export CONDA_AUTO_ACTIVATE_BASE=false
+#export CONDA_SHLVL=1
+source /opt/miniconda3/etc/profile.d/conda.sh
