@@ -8,12 +8,9 @@ services:
                 - /opt:/opt 
         ports:
                 - 8888:8888
-                  #- 6817:6817
-                  #- 6818:6818
-                  #- 6819:6819
-                 #command: ["bash", "-c", "export PATH=$PATH:/opt/miniconda3/bin && env"]
-               
-                  
+        cpus: 2
+        mem_limit: 10000M
+
         entrypoint: ["/bin/bash", "-c",
                                  "service munge start &&
                                  adduser -u 182000020 pat_zamora --disabled-password --gecos ' ' &&

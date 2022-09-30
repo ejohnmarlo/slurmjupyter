@@ -22,21 +22,22 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 RUN adduser -u 1001 munge --disabled-password --gecos ""
 RUN adduser -u 1002 slurm --disabled-password --gecos ""
 
-#RUN apt update -y && apt install -y libmunge-dev libmunge2 munge hwloc libhwloc-dev net-tools
-RUN apt install munge -y && apt install vim -y && apt install build-essential -y && apt install git -y && apt-get install mariadb-server -y
+RUN apt update -y && apt install -y libmunge-dev libmunge2 munge hwloc libhwloc-dev net-tools
+##RUN apt install munge -y && apt install vim -y && apt install build-essential -y && apt install git -y && apt-get install mariadb-server -y
 
 
-COPY munge.key /etc/munge/
+COPY config/munge.key /etc/munge/
 RUN chown -R munge /etc/munge
 
-#COPY slurm-22.05.3_1.0_amd64.deb /
-#RUN dpkg -i /slurm-22.05.3_1.0_amd64.deb
+COPY config/slurm-22.05.3_1.0_amd64.deb /
+RUN dpkg -i /slurm-22.05.3_1.0_amd64.deb
 
-#RUN mkdir -p /etc/slurm /etc/slurm/prolog.d /etc/slurm/epilog.d /var/spool/slurm/d
-#RUN chown slurm /var/spool/slurm/d
-COPY slurm.conf /etc/slurm-llnl/
-COPY cgroup.conf /etc/slurm-llnl/
-#RUN chown -R slurm /etc/slurm
+RUN mkdir -p /etc/slurm /etc/slurm/prolog.d /etc/slurm/epilog.d /var/spool/slurm/d
+RUN chown slurm /var/spool/slurm/d
+##COPY slurm.conf /etc/slurm-llnl/
+##COPY cgroup.conf /etc/slurm-llnl/
+COPY config/*.conf /etc/slurm/
+RUN chown -R slurm /etc/slurm
 
 #ENV LANG C.UTF-8
 
@@ -50,7 +51,7 @@ COPY cgroup.conf /etc/slurm-llnl/
 
 # Some TF tools expect a "python" binary
 #RUN ln -s $(which python3) /usr/local/bin/python
-RUN apt install slurm-client -y
+##RUN apt install slurm-client -y
 RUN apt install curl dirmngr apt-transport-https lsb-release ca-certificates -y
 RUN curl -fsSL https://deb.nodesource.com/setup_16.x | bash -
 #RUN curl -fsSL https://deb.nodesource.com/setup_12.x | bash -
@@ -76,14 +77,17 @@ EXPOSE 8888
 
 
 #ENTRYPOINT ["conda", "run", "-n", "samsung", "/bin/bash", "-c","tail -f /dev/null"]
-COPY export.file .
+COPY config/export.file .
 RUN cat export.file >> /etc/profile.d/miniconda3.sh
 #SHELL ["conda", "run", "-n", "base", "/bin/bash", "-c"]
 #RUN python3 -m ipykernel.kernelspec
 
-COPY bash.bashrc /
+COPY config/bash.bashrc /
 RUN cat /bash.bashrc >> /etc/bash.bashrc
 #RUN export PATH=$PATH:/opt/miniconda3/bin
 RUN python3 -m pip install ipykernel
+
+COPY config/config_jupyter.sh /
+RUN chmod a+x /config_jupyter.sh
 #SHELL ["conda", "run", "-n", "pytorch", "/bin/bash","-c"]
 ENTRYPOINT ["/bin/bash", "-c","tail -f /dev/null"]
