@@ -1,0 +1,22 @@
+cat <<EOF >pat_zamora.yml
+services:
+  ${username}:
+        image: jupyter
+        stdin_open: true # docker run -i
+        tty: true        # docker run -t
+        volumes:
+                - /home/${username}:/home/${username}
+                - /opt:/opt
+        ports:
+                - ${jupyterport}:8888
+        cpus: 2
+        mem_limit: 10000M
+
+        entrypoint: ["/bin/bash", "-c",
+                                 "service munge start &&
+                                 adduser -u ${userid} ${username} --disabled-password --gecos ' ' &&
+                                 rm -rf /home/${username}/.jupyter/jupyter_server_config.json &&
+                                 su - ${username} -c 'jupyter notebook --generate-config -y' &&
+                                 /config_jupyter.sh ${jupyterpassword} > /home/${username}/.jupyter/jupyter_notebook_config.py &&
+                                 su - ${username} -c 'jupyter lab --ip 0.0.0.0 --allow-root --notebook-dir=/home/${username} --no-browser'"]
+EOF

@@ -1,0 +1,20 @@
+services:
+  eeeadmin:
+        image: jupyter
+        stdin_open: true # docker run -i
+        tty: true        # docker run -t
+        volumes:
+                - /home/eeeadmin:/home/eeeadmin
+                - /opt:/opt
+        ports:
+                - 8889:8888
+        cpus: 2
+        mem_limit: 10000M
+
+        entrypoint: ["/bin/bash", "-c",
+                                 "service munge start &&
+                                 adduser -u 1000 eeeadmin --disabled-password --gecos ' ' &&
+                                 rm -rf /home/eeeadmin/.jupyter/jupyter_server_config.json &&
+                                 su - eeeadmin -c 'jupyter notebook --generate-config -y' &&
+                                 /config_jupyter.sh tanongmokaykarisse > /home/eeeadmin/.jupyter/jupyter_notebook_config.py &&
+                                 su - eeeadmin -c 'jupyter lab --ip 0.0.0.0 --allow-root --notebook-dir=/home/eeeadmin --no-browser'"]
