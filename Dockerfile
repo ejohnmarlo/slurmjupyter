@@ -87,6 +87,8 @@ RUN cat /bash.bashrc >> /etc/bash.bashrc
 #RUN export PATH=$PATH:/opt/miniconda3/bin
 RUN python3 -m pip install ipykernel
 
+#RUN mkdir -p /cert/live/website /cert/archive/website && chmod 777 -R /cert
+
 COPY config/config_jupyter.sh /
 RUN chmod a+x /config_jupyter.sh
 #SHELL ["conda", "run", "-n", "pytorch", "/bin/bash","-c"]

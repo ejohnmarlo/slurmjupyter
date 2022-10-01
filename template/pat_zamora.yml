@@ -1,20 +1,28 @@
+version: "2"
+name: pat_zamora
 services:
-  pat_zamora:
+  slurmjupyter:
         image: jupyter
         stdin_open: true # docker run -i
         tty: true        # docker run -t
+        restart: always 
         volumes:
                 - /home/pat_zamora:/home/pat_zamora
                 - /opt:/opt
+                - /etc/letsencrypt/live/colab.eee.upd.edu.ph:/cert/live/colab.eee.upd.edu.ph #optional for SSL certificate
+                - /etc/letsencrypt/archive/colab.eee.upd.edu.ph:/cert/archive/colab.eee.upd.edu.ph #optional for SSL certificate
         ports:
-                - 8889:8888
+                - 8888:8888
         cpus: 2
         mem_limit: 10000M
 
         entrypoint: ["/bin/bash", "-c",
-                                 "service munge start &&
+                                 "service munge start && chmod 777 -R /cert &&
                                  adduser -u 182000020 pat_zamora --disabled-password --gecos ' ' &&
                                  rm -rf /home/pat_zamora/.jupyter/jupyter_server_config.json &&
                                  su - pat_zamora -c 'jupyter notebook --generate-config -y' &&
                                  /config_jupyter.sh tanongmokaykarisse > /home/pat_zamora/.jupyter/jupyter_notebook_config.py &&
-                                 su - pat_zamora -c 'jupyter lab --ip 0.0.0.0 --allow-root --notebook-dir=/home/pat_zamora --no-browser'"]
+                                 su - pat_zamora -c 'jupyter lab --ip 0.0.0.0 --allow-root --notebook-dir=/home/pat_zamora --no-browser
+                                 --certfile=/cert/live/colab.eee.upd.edu.ph/fullchain.pem
+                                 --keyfile=/cert/live/colab.eee.upd.edu.ph/privkey.pem'"]
+                                 
