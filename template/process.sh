@@ -1,25 +1,25 @@
-#export username="pat_zamora"
-#export jupyterport="8888"
-#export jupyterpassword="tanongmokaykarisse"
-
-export website=$1
+export website=$1 #"colab.eee.upd.edu.ph"
 export username=$2
-export jupyterport=$3
+export jupyterport=$3 #8888-9999
 export jupyterpassword=$4
 export userid=$(id -u $username)
 
-docker-compose -f $username.yml down
+
+#Create directory for docker-compose
+sudo mkdir -p files
+TARGET="files/$username.yml"
+
+#Shutdown existing docker container
+docker-compose -f $TARGET down
 
 #Create directory for username before starting the container
 sudo su - $username -c 'mkdir -p /home/$username'
 
-rm -f $username.yml temp.yml
-( echo "cat <<EOF >$username.yml";
+rm -f $TARGET temp.yml
+( echo "cat <<EOF >$TARGET";
   cat template.yml;
-  echo "EOF";
+    echo "EOF";
 ) >temp.yml
 . temp.yml
-#rm -f temp.yml
-cat $username.yml
-docker-compose -f $username.yml up -d
-#docker-compose -f $username.yml up --force-recreate --build -d
+cat $TARGET
+docker-compose -f $TARGET up -d
