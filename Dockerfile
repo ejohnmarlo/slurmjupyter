@@ -31,6 +31,7 @@ RUN chown -R munge /etc/munge
 
 COPY config/slurm-22.05.3_1.0_amd64.deb /
 RUN dpkg -i /slurm-22.05.3_1.0_amd64.deb
+RUN rm -rf /slurm-22.05.3_1.0_amd64.deb
 
 RUN mkdir -p /etc/slurm /etc/slurm/prolog.d /etc/slurm/epilog.d /var/spool/slurm/d
 RUN chown slurm /var/spool/slurm/d
@@ -90,6 +91,6 @@ RUN python3 -m pip install ipykernel
 #RUN mkdir -p /cert/live/website /cert/archive/website && chmod 777 -R /cert
 
 COPY config/config_jupyter.sh /
-RUN chmod a+x /config_jupyter.sh
+RUN chmod 771 /config_jupyter.sh
 #SHELL ["conda", "run", "-n", "pytorch", "/bin/bash","-c"]
 ENTRYPOINT ["/bin/bash", "-c","tail -f /dev/null"]

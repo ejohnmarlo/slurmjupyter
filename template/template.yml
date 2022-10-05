@@ -17,7 +17,7 @@ services:
         mem_limit: 10000M
 
         entrypoint: ["/bin/bash", "-c",
-                                 "service munge start && chmod 777 -R /cert &&
+                                 "service munge start && chmod 665 -R /cert &&
                                  adduser -u ${userid} ${username} --disabled-password --gecos ' ' &&
                                  rm -rf /home/${username}/.jupyter/jupyter_server_config.json &&
                                  su - ${username} -c 'jupyter notebook --generate-config -y' &&

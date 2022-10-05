@@ -1,4 +1,4 @@
-export website=$1 #"colab.eee.upd.edu.ph"
+export website=$1 #"hpc.eee.upd.edu.ph"
 export username=$2
 export jupyterport=$3 #8888-9999
 export jupyterpassword=$4
@@ -23,3 +23,5 @@ rm -f $TARGET temp.yml
 . temp.yml
 cat $TARGET
 docker-compose -f $TARGET up -d
+sleep 5 #Wait for a while until all logs are printed
+docker-compose -f $TARGET logs
