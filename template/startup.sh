@@ -1,6 +1,6 @@
 #!/bin/bash
 
-for filename in files/*.yml; do
-        docker-compose -f "$filename" down
-        docker-compose -f "$filename" up -d
+for filename in /root/students/files/*.yml; do
+        sudo docker-compose -f "$filename" down
+        sudo docker-compose -f "$filename" up -d
 done
