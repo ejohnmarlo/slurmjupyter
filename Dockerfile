@@ -3,7 +3,7 @@ FROM ubuntu:20.04
 
 SHELL [ "/bin/bash", "--login", "-c" ]
 
-RUN apt update -y && apt install -y wget
+RUN apt-get update -y && apt install -y wget iputils-ping git
 #RUN mkdir -p /opt
 #RUN wget https://repo.anaconda.com/miniconda/Miniconda3-py39_4.12.0-Linux-x86_64.sh -O /opt/miniconda.sh
 #RUN chmod +x /opt/miniconda.sh && bash /opt/miniconda.sh -b -u -p /opt/miniconda3
@@ -28,6 +28,7 @@ RUN apt update -y && apt install -y libmunge-dev libmunge2 munge hwloc libhwloc-
 
 COPY config/munge.key /etc/munge/
 RUN chown -R munge /etc/munge
+RUN chmod 400 /etc/munge/munge.key
 
 COPY config/slurm-22.05.3_1.0_amd64.deb /
 RUN dpkg -i /slurm-22.05.3_1.0_amd64.deb
