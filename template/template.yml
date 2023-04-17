@@ -5,7 +5,8 @@ services:
         image: jupyter
         stdin_open: true # docker run -i
         tty: true        # docker run -t
-        restart: always 
+        restart: always
+        network_mode: "bridge"  #Added bridge network, otherwise it will create bridge with name username_default which is limited to only 30 bridges
         volumes:
                 - /home/${username}:/home/${username}
                 - /opt:/opt
