@@ -3,7 +3,7 @@ FROM ubuntu:20.04
 
 SHELL [ "/bin/bash", "--login", "-c" ]
 
-RUN apt-get update -y && apt install -y wget iputils-ping git
+RUN apt-get update -y && apt install -y environment-modules wget iputils-ping git
 #RUN mkdir -p /opt
 #RUN wget https://repo.anaconda.com/miniconda/Miniconda3-py39_4.12.0-Linux-x86_64.sh -O /opt/miniconda.sh
 #RUN chmod +x /opt/miniconda.sh && bash /opt/miniconda.sh -b -u -p /opt/miniconda3
