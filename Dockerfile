@@ -1,4 +1,5 @@
 FROM ubuntu:20.04
+ENV TZ=Asia/Manila DEBIAN_FRONTEND=noninteractive
 #FROM continuumio/miniconda3
 
 SHELL [ "/bin/bash", "--login", "-c" ]
@@ -16,7 +17,6 @@ RUN apt-get update -y && apt install -y environment-modules wget iputils-ping gi
 
 #SHELL ["conda", "run", "-n", "base", "/bin/bash", "-c"]
 
-ENV TZ=Asia/Manila
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 RUN adduser -u 1001 munge --disabled-password --gecos ""
